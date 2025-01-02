@@ -73,7 +73,6 @@ let main argv =
             wygranaKomputera <- wygranaGry symbolKomputera
             rundy <- rundy + 1
     if wygranaGracza = true then
-        rysowaniePlanszy()
         printfn "Brawo! Wygrałeś!"
     elif wygranaKomputera = true then 
         rysowaniePlanszy()
