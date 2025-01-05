@@ -13,5 +13,14 @@ let removeDuplicates list1 =
     | h::t -> remove t list2
   remove list1 []
 
-let wynik = removeDuplicates ["one";"One";"one";"ala"]
-printfn "%A" wynik
+
+
+[<EntryPoint>]
+let main argv =
+    printfn "Podaj ciąg słów oddzielony spacjami"
+    let input = System.Console.ReadLine()
+    let list = input.Split(' ') |> Seq.toList
+    let wynik = removeDuplicates list
+    printfn "%A" wynik
+    0
+
