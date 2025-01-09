@@ -18,6 +18,7 @@ type Bank () =
     member this.CreateAccount(accountNumber: int, Balance :float) =
         let account = BankAccount(accountNumber,Balance)
         _accounts <- account::_accounts
+        printfn "Utworzono Account number: %i" accountNumber
     member this.GetAccount (accountNumber: int) =
         let account = _accounts |> List.find(fun c -> c.AccountNumber = accountNumber)
         if account.AccountNumber=accountNumber then
@@ -27,7 +28,7 @@ type Bank () =
     member this.UpdateAccount (accountNumber: int, balance: float) =
         let account = _accounts |> List.find(fun c -> c.AccountNumber = accountNumber)
         if account.AccountNumber=accountNumber then
-            if balance <= 0 then
+            if balance >= 0.0 then
                 account.Deposit balance
             else
                 account.Withdraw balance
@@ -45,6 +46,17 @@ type Bank () =
 
 [<EntryPoint>]
 let main argv =
+    let bank = Bank ()
+    bank.CreateAccount(1,10.0)
+    bank.CreateAccount(2,3410.0)
+    bank.CreateAccount(3,50.50)
 
+    bank.GetAccount(1)
+    bank.UpdateAccount(1,450.0)
+    bank.GetAccount(2)
+    bank.UpdateAccount(2,-2000.0)
+    bank.GetAccount(3)
+    bank.UpdateAccount(3,-60.0)
+    
+    bank.DeleteAccount(3)
     0
-
