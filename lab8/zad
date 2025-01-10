@@ -1,0 +1,73 @@
+open System
+open System.Collections.Generic
+// Definicja listy łączonej
+type LinkedList<'T> =
+| Empty // Pusta lista
+| Node of 'T * LinkedList<'T> // Węzeł zawierający wartość i referencję do
+
+
+
+// Funckje przydatne podczas wykonywania operacji na głowie i ogonie
+
+// Przykład użycia
+module LinkedList =
+    let rec fromList =
+        function 
+        | [] -> Empty
+        | x :: xs -> Node(x, fromList xs)
+    let Head =
+        function
+        | Empty -> failwith "Nie można pobrać głowy z listy pustej"
+        | Node(Head,_) -> Head
+    let Tail =
+        function
+        | Empty -> failwith "Nie można pobrać ogona z listy pustej"
+        | Node(Tail,_) -> Tail
+    // Funkcja dodająca element na początek listy
+    let addHead value list =
+        Node(value, list)
+    // Funkcja wyświetlająca elementy listy
+    let rec printList list =
+        match list with
+        | Empty -> ()
+        | Node(value, next) ->
+        printf "%A " value
+        printList next
+    // Funkcja rekurencyjna obliczająca ilość elementów na liście
+    let rec numberElements =
+        function
+        | Empty -> 0
+        | Node (_,Tail) -> numberElements Tail + 1
+    // Funckja wyszukująca element na liście, i dodające nowy element za nią
+    // element - poszukiwany element listy
+    // newElement - nowy element, który chcemy wstawić
+    let rec addAfter element newElement =
+        function
+        | Empty -> failwith ("Nie znaleziono elementu: " + element.ToString())
+        | Node (Head,Tail) ->
+        if Head = element then
+            Node(element, Node (newElement, Tail))
+        else
+            Node(Head, addAfter element newElement Tail)
+
+let rec readUserList() =
+    printf "Podaj elementy list odzielone spacja"
+    let input = Console.ReadLine()
+    let items = 
+        input.Split(' ')
+        |> Array.choose( fun x-> 
+            match Int32.TryParse(x) with
+            | (true,v) -> Some v
+            | _ -> None
+        |> Array.toList
+    LinkedList.fromList items //
+    
+
+
+[<EntryPoint>]
+let main argv =
+    let mutable userList = LinkedList.Empty
+    userList = readUserList()
+    //LinkedList.printList userList
+    LinkedList.printList userList
+    0
